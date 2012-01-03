@@ -25,14 +25,16 @@ class FileData {
 		return $this->lines[$row];
 	}
 	
-	public function getSmallestTempSpread($from, $to) {
+	public function getSmallestSpread($from, $to, $retCol, $diffCol1, $diffCol2) {
+		
 		$smallestSpread = -1;
 		$smallestSpreadIndex = -1;
 		for($x = $from; $x < $to; $x++){
-			$tempSpread = $this->getValue($x, 1) - $this->getValue($x, 2);
+			if($this->invalidRow($x)) continue;
+			$tempSpread = abs($this->getValue($x, $diffCol1) - $this->getValue($x, $diffCol2));
 			if($tempSpread < $smallestSpread || $smallestSpread == -1){
 				$smallestSpread = $tempSpread;
-				$smallestSpreadIndex = $this->getValue($x, 0);
+				$smallestSpreadIndex = $this->getValue($x, $retCol);
 			}
 		}
 		return $smallestSpreadIndex;
@@ -42,6 +44,10 @@ class FileData {
 		$lineData = trim($this->getLine($row));
 		$cols = preg_split('/\s+/', $lineData);
 		return $cols[$col];
+	}
+	
+	private function invalidRow($row) {
+		return preg_match('/[-]{10,}/', $this->getLine($row));
 	}
 }
 

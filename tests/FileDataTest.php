@@ -12,6 +12,7 @@ class FileDataTest extends PHPUnit_Framework_TestCase {
 	 * @var FileData
 	 */
 	protected $object;
+	protected $object2;
 
 	/**
 	 * Sets up the fixture, for example, opens a network connection.
@@ -19,6 +20,7 @@ class FileDataTest extends PHPUnit_Framework_TestCase {
 	 */
 	protected function setUp() {
 		$this->object = new FileData('../weather.dat');
+		$this->object2 = new FileData('../football.dat');
 	}
 
 	/**
@@ -39,12 +41,18 @@ class FileDataTest extends PHPUnit_Framework_TestCase {
     }
 	
 	public function testSmallestTempSpread() {
-	   $this->assertEquals(14, $this->object->getSmallestTempSpread(8, 37));
+	   $this->assertEquals(14, $this->object->getSmallestSpread(8, 37, 0, 1, 2));
 	}
 
 	public function testGetValue() {
 	   $this->assertEquals(90, $this->object->getValue(12, 1));
 	}
+	
+	public function testSmallestGoalSpread() {
+	   $this->assertEquals('Sunderland', $this->object2->getSmallestSpread(5, 25, 1, 6, 7));
+	}
+
+	
    
 }
 
